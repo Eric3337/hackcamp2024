@@ -3,7 +3,7 @@
   "name": "Hello Extensions",
   "description": "Base Level Extension",
   "version": "1.0",
-  "permissions": ["sidePanel", "tabs"],
+  "permissions": ["sidePanel", "tabs", "storage"],
   "background": {
     "service_worker": "service-worker.js"
   },

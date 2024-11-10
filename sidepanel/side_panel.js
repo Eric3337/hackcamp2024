@@ -6,16 +6,38 @@ const fileList = document.getElementById("file-list")
 
 inputFile.addEventListener("change", uploadFile);
 
-function uploadFile() {
-    let file = inputFile.files[0];
-    console.log("File received.");
+document.addEventListener('DOMContentLoaded', checkAndDisplayStoredData);
+
+function checkAndDisplayStoredData() {
+    chrome.storage.local.get(['fileName', 'skills'], function(result) {
+        if (result.fileName) {
+            if (fileList.children.length === 1) {
+                fileList.innerHTML = '';
+            }
+            const fileItem = document.createElement("div");
+            fileItem.classList.add("file-item");
+            fileItem.textContent = `${result.fileName} • Uploaded`;
+            fileList.appendChild(fileItem);
+            
+            console.log('Stored skills:', result.skills);
+        }
+    });
+}
+
+function updateFileDisplay(fileName, status) {
     if (fileList.children.length === 1) {
         fileList.innerHTML = '';
     }
     const fileItem = document.createElement("div");
     fileItem.classList.add("file-item");
-    fileItem.textContent = `${file.name} • Uploaded`;
+    fileItem.textContent = `${fileName} • ${status}`;
     fileList.appendChild(fileItem);
+}
+
+function uploadFile() {
+    let file = inputFile.files[0];
+    console.log("File received.");
+    updateFileDisplay(file.name, 'Uploaded');
 
     const formData = new FormData();
 
@@ -32,8 +54,19 @@ function uploadFile() {
         body: formData
     })
         .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error("Error:", error));
+        .then(data => {
+            const skills = data.data.skills.overall_skills;
+            const fileName = file.name;
+            // console.log(skills);
+            chrome.storage.local.set({skills, fileName}, function() {
+                console.log('Value is set to ' + skills + fileName);
+                updateFileDisplay(file.name, 'Uploaded');
+              });
+        })
+        .catch(error => {
+            updateFileDisplay(file.name, 'Could not parse');
+            console.error("error: ", error);
+        });
 }
 
 dropArea.addEventListener("dragover", function (e) {
