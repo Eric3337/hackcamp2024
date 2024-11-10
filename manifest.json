@@ -8,7 +8,7 @@
     "service_worker": "service-worker.js"
   },
   "action": {
-    "default_title": "Click to open"
+    "default_title": "Click to open Scopify panel"
   },
   "side_panel": {
     "default_path": "sidepanel/side_panel.html"

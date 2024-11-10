@@ -6,21 +6,21 @@
   <link rel="stylesheet" href="side_panel.css">
 </head>
 <body>
-  <h3>side panel</h3>
-  <button id="actionButton">Do Something</button>
+  <h1>Scopify</h1>
   <div>
     <label for="input-file" id="drop-area">
       <input type="file" accept="application/pdf" id="input-file" hidden>
       <div id="img-view">
-        <img src="hello_extensions.png">
+        <img src="upload_icon.png">
         <p>Drag and drop or click here<br> to upload resume</p>
-        <span>Upload resume from </span>
+        <span>Upload resume from your computer</span>
       </div>
     </label>
+    <div class="file-list" id="file-list"></div>
   </div>
   <input type="file" id="file-input" multiple hidden>
   <div id="preview-container"></div>
-  <script src="side_panel.js"></script>
+  <script type="module" src="side_panel.js"></script>
 
 </body>
 </html>
