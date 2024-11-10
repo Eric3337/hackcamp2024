@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Extension Side Panel</title>
+  <link rel="stylesheet" href="side_panel.css">
+</head>
+<body>
+  <h3>side panel</h3>
+  <button id="actionButton">Do Something</button>
+  <div>
+    <label for="input-file" id="drop-area">
+      <input type="file" accept="application/pdf" id="input-file" hidden>
+      <div id="img-view">
+        <img src="hello_extensions.png">
+        <p>Drag and drop or click here<br> to upload resume</p>
+        <span>Upload resume from </span>
+      </div>
+    </label>
+  </div>
+  <input type="file" id="file-input" multiple hidden>
+  <div id="preview-container"></div>
+  <script src="side_panel.js"></script>
+
+</body>
+</html>
