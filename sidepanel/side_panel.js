@@ -1,4 +1,5 @@
 import {apiKey} from './export.js';
+import { checkSkillsMatch } from '../SkillsMatcher.js';
 
 const SCOPE = "https://scope.sciencecoop.ubc.ca/myAccount/co-op/postings.htm";
 
@@ -109,7 +110,13 @@ function getPageContent(tab) {
             }, (result) => {
                 if (result && result[0]) {
                 const liList = JSON.parse(result[0].result);  // Parse the JSON string
-                console.log(liList.join('\n')); // Display the result
+                // console.log(liList.join('\n')); // Display the result
+                chrome.local.get('skills')
+                chrome.storage.local.get(['fileName', 'skills'], function (result) {
+                    const { numMatches, matches } = checkSkillsMatch(result.skills, liList);   
+                });
+                console.log(numMatches);
+                console.log(matches); 
             } else {
                 console.log('No li elements found.');
             }
