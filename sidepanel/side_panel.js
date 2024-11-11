@@ -56,6 +56,10 @@ function updateSkillDisplay(skills) {
     skillList.appendChild(ul);
 }
 
+function removeProgrammingLanguageSubstring(arr) {
+    return arr.map(str => str.replace(/\s(.?)/, ""));
+  }
+
 function uploadFile() {
     let file = inputFile.files[0];
     console.log("File received.");
@@ -77,7 +81,8 @@ function uploadFile() {
     })
         .then(response => response.json())
         .then(data => {
-            const skills = data.data.skills.overall_skills;
+            const rawSkills = data.data.skills.overall_skills;
+            const skills = rawSkills.map(item => item.replace(' (Programming Language)', ''));
             const fileName = file.name;
             // console.log(skills);
             chrome.storage.local.set({skills, fileName}, function () {
