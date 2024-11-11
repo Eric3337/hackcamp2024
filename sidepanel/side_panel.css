@@ -53,3 +53,13 @@ p {
     height: 10px;               /* Adjust height */
     margin: 0 5px;
 }
+
+#skill-list {
+    color: white;
+    font-size: 14px;
+    text-align: left;
+}
+
+#skill-list li {
+    color: lawngreen;
+}

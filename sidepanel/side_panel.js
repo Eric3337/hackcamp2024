@@ -1,11 +1,12 @@
 import {apiKey} from './export.js';
-import { checkSkillsMatch } from '../SkillsMatcher.js';
+import {checkSkillsMatch} from '../SkillsMatcher.js';
 
 const SCOPE = "https://scope.sciencecoop.ubc.ca/myAccount/co-op/postings.htm";
 
 const dropArea = document.getElementById("drop-area");
 const inputFile = document.getElementById("input-file");
 const fileList = document.getElementById("file-list")
+const skillList = document.getElementById("skill-list")
 
 inputFile.addEventListener("change", uploadFile);
 
@@ -35,6 +36,24 @@ function updateFileDisplay(fileName, status) {
     fileItem.classList.add("file-item");
     fileItem.textContent = `${fileName} • ${status}`;
     fileList.appendChild(fileItem);
+}
+
+function updateSkillDisplay(skills) {
+    if (skillList.children.length > 0) {
+        skillList.innerHTML = '';
+    }
+    const title = document.createElement('h3');
+    title.textContent = 'Matched skills:';  // Set the title text
+    const ul = document.createElement('ul');
+
+    skills.forEach(text => {
+        const li = document.createElement('li');
+        li.textContent = text;
+        ul.appendChild(li);
+    });
+
+    skillList.appendChild(title);
+    skillList.appendChild(ul);
 }
 
 function uploadFile() {
@@ -105,21 +124,22 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 function getPageContent(tab) {
     console.log("======= active tab url", tab.url);
     chrome.scripting.executeScript({
-        target: { tabId: tab.id },
+        target: {tabId: tab.id},
         func: getLiContent
     }, (result) => {
         if (result && result[0]) {
             const liList = JSON.parse(result[0].result);  // Parse the JSON string
             chrome.storage.local.get(['fileName', 'skills'], function (storageResult) {
                 // Destructure the result to get skills and fileName
-                const { skills, fileName } = storageResult;
-                
+                const {skills, fileName} = storageResult;
+
                 // Check if we got the skills and fileName
                 if (skills) {
-                    const { matchNum, matches } = checkSkillsMatch(skills, liList); 
+                    const {matchNum, matches} = checkSkillsMatch(skills, liList);
                     // These are available because they're inside the callback now
                     console.log("Match Number:", matchNum);
                     console.log("Matched Skills:", matches);
+                    updateSkillDisplay(matches);
                 } else {
                     console.log('No skills found in storage.');
                 }
