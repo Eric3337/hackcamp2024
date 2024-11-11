@@ -104,23 +104,30 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 
 function getPageContent(tab) {
     console.log("======= active tab url", tab.url);
-        chrome.scripting.executeScript({
-                target: {tabId: tab.id},
-                func: getLiContent
-            }, (result) => {
-                if (result && result[0]) {
-                const liList = JSON.parse(result[0].result);  // Parse the JSON string
-                // console.log(liList.join('\n')); // Display the result
-                chrome.local.get('skills')
-                chrome.storage.local.get(['fileName', 'skills'], function (result) {
-                    const { matchNum, matches }  = checkSkillsMatch(result.skills, liList);   
-                });
-                console.log(matchNum);
-                console.log(matches); 
-            } else {
-                console.log('No li elements found.');
-            }
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: getLiContent
+    }, (result) => {
+        if (result && result[0]) {
+            const liList = JSON.parse(result[0].result);  // Parse the JSON string
+            chrome.storage.local.get(['fileName', 'skills'], function (storageResult) {
+                // Destructure the result to get skills and fileName
+                const { skills, fileName } = storageResult;
+                
+                // Check if we got the skills and fileName
+                if (skills) {
+                    const { matchNum, matches } = checkSkillsMatch(skills, liList); 
+                    // These are available because they're inside the callback now
+                    console.log("Match Number:", matchNum);
+                    console.log("Matched Skills:", matches);
+                } else {
+                    console.log('No skills found in storage.');
+                }
             });
+        } else {
+            console.log('No li elements found.');
+        }
+    });
 }
 
 

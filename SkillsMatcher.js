@@ -52,13 +52,14 @@ function calculateMatchPercentage(skill, jobDescriptionTokens) {
 // Function to check if more than 50% of skills match the job description
 export function checkSkillsMatch(resumeSkills, jobDescription) {
 
-    const jobDescriptionTokens = jobDescription.toLowerCase().split(/\s+/);
+    // console.log(jobDescription);
+    // const jobDescriptionTokens = jobDescription.toLowerCase().split(/\s+/);
     let matchedSkillsCount = 0;
 
     let matches = [];
 
     resumeSkills.forEach(skill => {
-        const percentage = calculateMatchPercentage(skill, jobDescriptionTokens);
+        const percentage = calculateMatchPercentage(skill, jobDescription);
         if (percentage >= 80) {
             matchedSkillsCount++;
             matches.push(skill);
