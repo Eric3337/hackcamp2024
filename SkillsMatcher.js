@@ -21,7 +21,7 @@ const jobDescriptionString = jobDescription.join(" ");
 // Tokenize the job description
 const jobDescriptionTokens = jobDescriptionString.toLowerCase().split(/\s+/);
 
-let matches = [];
+// let matches = [];
 
 // Initialize Fuse.js with options
 const fuse = new Fuse(jobDescriptionTokens, {
@@ -42,10 +42,12 @@ function calculateMatchPercentage(skill, jobDescriptionTokens) {
 }
 
 // Function to check if more than 50% of skills match the job description
-export function checkSkillsMatch(resumeSkills, jobDescription) {
+function checkSkillsMatch(resumeSkills, jobDescription) {
   
   const jobDescriptionTokens = jobDescription.toLowerCase().split(/\s+/);
   let matchedSkillsCount = 0;
+
+  let matches = [];
 
   resumeSkills.forEach(skill => {
     const percentage = calculateMatchPercentage(skill, jobDescriptionTokens);
@@ -55,13 +57,15 @@ export function checkSkillsMatch(resumeSkills, jobDescription) {
     }
   });
 
-  const matchPercentage = matchedSkillsCount;
+  const matchNum = matchedSkillsCount;
 
   // If more than 50% of skills match, return true
-  return {matchPercentage, matches};
+  // return {matchPercentage, matches};
+  return {matchNum, matches};
 }
 
 // // Check if over 50% of skills match the job description
-// const isMatch = checkSkillsMatch(resumeSkills, jobDescriptionTokens);
-// console.log("Match: ", isMatch);  // true or false
-// console.log(matches);
+const {matchNum, matches} = checkSkillsMatch(resumeSkills, jobDescriptionString);
+// const matchNum = checkSkillsMatch(resumeSkills, jobDescriptionString);
+console.log("Match: ", matchNum);  // true or false
+console.log(matches);

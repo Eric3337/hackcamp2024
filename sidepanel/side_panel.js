@@ -113,9 +113,9 @@ function getPageContent(tab) {
                 // console.log(liList.join('\n')); // Display the result
                 chrome.local.get('skills')
                 chrome.storage.local.get(['fileName', 'skills'], function (result) {
-                    const { numMatches, matches } = checkSkillsMatch(result.skills, liList);   
+                    const { matchNum, matches }  = checkSkillsMatch(result.skills, liList);   
                 });
-                console.log(numMatches);
+                console.log(matchNum);
                 console.log(matches); 
             } else {
                 console.log('No li elements found.');
