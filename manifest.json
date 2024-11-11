@@ -3,10 +3,15 @@
   "name": "Hello Extensions",
   "description": "Base Level Extension",
   "version": "1.0",
-  "permissions": ["sidePanel", "tabs", "storage", "scripting"],
+  "permissions": [
+    "sidePanel",
+    "tabs",
+    "storage",
+    "scripting"
+  ],
   "host_permissions": [
-        "https://scope.sciencecoop.ubc.ca/myAccount/co-op/postings.htm"
-    ],
+    "https://scope.sciencecoop.ubc.ca/myAccount/co-op/postings.htm"
+  ],
   "background": {
     "service_worker": "service-worker.js"
   },
@@ -15,5 +20,8 @@
   },
   "side_panel": {
     "default_path": "sidepanel/side_panel.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self';"
   }
 }
