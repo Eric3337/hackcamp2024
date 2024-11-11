@@ -52,17 +52,24 @@ function calculateMatchPercentage(skill, jobDescriptionTokens) {
 // Function to check if more than 50% of skills match the job description
 export function checkSkillsMatch(resumeSkills, jobDescription) {
 
-    // console.log(jobDescription);
-    // const jobDescriptionTokens = jobDescription.toLowerCase().split(/\s+/);
-    let matchedSkillsCount = 0;
+    console.log(jobDescription);
+    const jobDescriptionString = jobDescription.join(" ");
 
+    // const jobDescriptionTokens = jobDescriptionString.toLowerCase().split(/\s+/);
+    // console.log(jobDescriptionTokens)
+    let matchedSkillsCount = 0;
+    // console.log(jobDescription);
     let matches = [];
 
     resumeSkills.forEach(skill => {
-        const percentage = calculateMatchPercentage(skill, jobDescription);
-        if (percentage >= 80) {
-            matchedSkillsCount++;
-            matches.push(skill);
+        // const percentage = calculateMatchPercentage(skill, jobDescription);
+        // if (percentage >= 10) {
+        //     matchedSkillsCount++;
+        //     matches.push(skill);
+        // }
+        if (jobDescriptionString.includes(skill)) {
+          matchedSkillsCount++;
+          matches.push(skill);
         }
     });
 
@@ -74,7 +81,7 @@ export function checkSkillsMatch(resumeSkills, jobDescription) {
 }
 
 // // Check if over 50% of skills match the job description
-const {matchNum, matches} = checkSkillsMatch(resumeSkills, jobDescriptionString);
-// const matchNum = checkSkillsMatch(resumeSkills, jobDescriptionString);
-console.log("Match: ", matchNum);  // true or false
-console.log(matches);
+// const {matchNum, matches} = checkSkillsMatch(resumeSkills, jobDescriptionString);
+// // const matchNum = checkSkillsMatch(resumeSkills, jobDescriptionString);
+// console.log("Match: ", matchNum);  // true or false
+// console.log(matches);
