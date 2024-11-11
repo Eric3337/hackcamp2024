@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Hello Extensions",
-  "description": "Base Level Extension",
+  "name": "Scopify",
+  "description": "",
   "version": "1.0",
   "permissions": [
     "sidePanel",
@@ -20,6 +20,9 @@
   },
   "side_panel": {
     "default_path": "sidepanel/side_panel.html"
+  },
+  "icons": {
+    "16": "icon.png"
   },
   "content_security_policy": {
     "extension_pages": "script-src 'self';"
