@@ -1,4 +1,6 @@
-import { apiKey } from './export.js';
+import {apiKey} from './export.js';
+
+const SCOPE = "https://scope.sciencecoop.ubc.ca/myAccount/co-op/postings.htm";
 
 const dropArea = document.getElementById("drop-area");
 const inputFile = document.getElementById("input-file");
@@ -9,7 +11,7 @@ inputFile.addEventListener("change", uploadFile);
 document.addEventListener('DOMContentLoaded', checkAndDisplayStoredData);
 
 function checkAndDisplayStoredData() {
-    chrome.storage.local.get(['fileName', 'skills'], function(result) {
+    chrome.storage.local.get(['fileName', 'skills'], function (result) {
         if (result.fileName) {
             if (fileList.children.length === 1) {
                 fileList.innerHTML = '';
@@ -18,7 +20,7 @@ function checkAndDisplayStoredData() {
             fileItem.classList.add("file-item");
             fileItem.textContent = `${result.fileName} • Uploaded`;
             fileList.appendChild(fileItem);
-            
+
             console.log('Stored skills:', result.skills);
         }
     });
@@ -58,10 +60,10 @@ function uploadFile() {
             const skills = data.data.skills.overall_skills;
             const fileName = file.name;
             // console.log(skills);
-            chrome.storage.local.set({skills, fileName}, function() {
+            chrome.storage.local.set({skills, fileName}, function () {
                 console.log('Value is set to ' + skills + fileName);
                 updateFileDisplay(file.name, 'Uploaded');
-              });
+            });
         })
         .catch(error => {
             updateFileDisplay(file.name, 'Could not parse');
@@ -78,3 +80,45 @@ dropArea.addEventListener("drop", function (e) {
     inputFile.files = e.dataTransfer.files;
     uploadFile();
 });
+
+/* Set for initial active tab when open the sidepanel */
+(async () => {
+    const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
+    getPageContent(tab);
+})();
+
+chrome.tabs.onActivated.addListener(async (activeInfo) => {
+        const tab = await chrome.tabs.get(activeInfo.tabId);
+        if (tab.active) {
+            getPageContent(tab);
+        }
+    }
+);
+
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+    if (tab.active) {
+        getPageContent(tab);
+    }
+});
+
+function getPageContent(tab) {
+    console.log("======= active tab url", tab.url);
+        chrome.scripting.executeScript({
+                target: {tabId: tab.id},
+                func: getLiContent
+            }, (result) => {
+                if (result && result[0]) {
+                const liList = JSON.parse(result[0].result);  // Parse the JSON string
+                console.log(liList.join('\n')); // Display the result
+            } else {
+                console.log('No li elements found.');
+            }
+            });
+}
+
+
+function getLiContent() {
+    var liElements = document.getElementsByTagName('li');
+    var liContents = Array.from(liElements).map(li => li.textContent.trim());
+    return JSON.stringify(liContents); // Returning the content as JSON string
+}
