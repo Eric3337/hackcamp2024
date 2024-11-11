@@ -3,14 +3,17 @@
   "name": "Hello Extensions",
   "description": "Base Level Extension",
   "version": "1.0",
-  "permissions": ["sidePanel", "tabs"],
+  "permissions": ["sidePanel", "tabs", "storage", "scripting"],
+  "host_permissions": [
+        "https://scope.sciencecoop.ubc.ca/myAccount/co-op/postings.htm"
+    ],
   "background": {
     "service_worker": "service-worker.js"
   },
   "action": {
-    "default_title": "Click to open"
+    "default_title": "Click to open Scopify panel"
   },
   "side_panel": {
-    "default_path": "side_panel.html"
+    "default_path": "sidepanel/side_panel.html"
   }
 }
